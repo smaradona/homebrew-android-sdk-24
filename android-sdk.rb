@@ -11,13 +11,12 @@ class AndroidSdk < Formula
   bottle do
     cellar :any
     rebuild 2
-    sha256 "9fe198f396e2a8209ff14b647d7d0ba2ab19ed523a19a63563b55003152514c3" => :sierra
     sha256 "9fe198f396e2a8209ff14b647d7d0ba2ab19ed523a19a63563b55003152514c3" => :el_capitan
     sha256 "9fe198f396e2a8209ff14b647d7d0ba2ab19ed523a19a63563b55003152514c3" => :yosemite
   end
 
-  depends_on :java
-  depends_on :macos => :mountain_lion
+  depends_on "openjdk@8"
+  # depends_on :macos => :mountain_lion
 
   conflicts_with "android-platform-tools",
     :because => "The Android Platform-Tools need to be installed as part of the SDK."
@@ -39,7 +38,7 @@ class AndroidSdk < Formula
     %w[android ddms draw9patch emulator
        emulator-arm emulator-x86 hierarchyviewer lint mksdcard
        monitor monkeyrunner traceview].each do |tool|
-      (bin/tool).write <<-EOS.undent
+      (bin/tool).write <<~EOS
         #!/bin/bash
         TOOL="#{prefix}/tools/#{tool}"
         exec "$TOOL" "$@"
@@ -47,7 +46,7 @@ class AndroidSdk < Formula
     end
 
     %w[zipalign].each do |tool|
-      (bin/tool).write <<-EOS.undent
+      (bin/tool).write <<~EOS
         #!/bin/bash
         TOOL="#{prefix}/build-tools/#{build_tools_version}/#{tool}"
         exec "$TOOL" "$@"
@@ -55,7 +54,7 @@ class AndroidSdk < Formula
     end
 
     %w[dmtracedump etc1tool hprof-conv].each do |tool|
-      (bin/tool).write <<-EOS.undent
+      (bin/tool).write <<~EOS
         #!/bin/bash
         TOOL="#{prefix}/platform-tools/#{tool}"
         exec "$TOOL" "$@"
@@ -71,7 +70,7 @@ class AndroidSdk < Formula
     end
 
     %w[adb fastboot].each do |platform_tool|
-      (bin/platform_tool).write <<-EOS.undent
+      (bin/platform_tool).write <<~EOS
         #!/bin/bash
         PLATFORM_TOOL="#{prefix}/platform-tools/#{platform_tool}"
         test -x "$PLATFORM_TOOL" && exec "$PLATFORM_TOOL" "$@"
@@ -82,7 +81,7 @@ class AndroidSdk < Formula
     end
 
     %w[aapt aidl dexdump dx llvm-rs-cc].each do |build_tool|
-      (bin/build_tool).write <<-EOS.undent
+      (bin/build_tool).write <<~EOS
         #!/bin/bash
         BUILD_TOOLS_VERSION='#{build_tools_version}'
         BUILD_TOOL="#{prefix}/build-tools/$BUILD_TOOLS_VERSION/#{build_tool}"
@@ -113,11 +112,9 @@ class AndroidSdk < Formula
     end
   end
 
-  def caveats; <<-EOS.undent
+  def caveats; <<~EOS
     Now run the 'android' tool to install the actual SDK stuff.
-
     The Android-SDK is available at #{opt_prefix}
-
     You may need to add the following to your .bashrc:
       export ANDROID_HOME=#{opt_prefix}
     EOS
