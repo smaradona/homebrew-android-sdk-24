@@ -10,9 +10,10 @@ class AndroidSdk < Formula
 
   bottle do
     cellar :any
-    rebuild 2
-    sha256 "9fe198f396e2a8209ff14b647d7d0ba2ab19ed523a19a63563b55003152514c3" => :el_capitan
-    sha256 "9fe198f396e2a8209ff14b647d7d0ba2ab19ed523a19a63563b55003152514c3" => :yosemite
+    revision 1
+    sha256 "17a99fa50d2e532d95e189f83fe84a5626c47386b30bbdd9203a9fcdb8087089" => :el_capitan
+    sha256 "c4453630cf237b3a54e09cf08867739f5d69841c466270b0c98a368f9d9d7b1a" => :yosemite
+    sha256 "88aac41e9525e897d207ba3e50cd36351ac5270c99cb3d85bed2306ccb623b21" => :mavericks
   end
 
   depends_on "openjdk@8"
